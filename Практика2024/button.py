@@ -1,7 +1,7 @@
 import pygame.font
 class Button():
-    def __init__(self, ai_game,msg):
-        """Инициализирует атрибуты подсчета очков."""
+    def __init__(self, ai_game,msg): #msg - строка, название кнопки
+        #Инициализирует атрибуты подсчета очков.
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
         self.width, self.height=200, 50

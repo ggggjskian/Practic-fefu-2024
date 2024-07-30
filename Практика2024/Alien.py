@@ -1,6 +1,6 @@
 from pygame.sprite import Sprite
 import pygame
-from settings import Settings
+
 class Alien(Sprite):
     def __init__(self,ai_game):
         super().__init__()

@@ -1,4 +1,5 @@
 import sys
+import keyboard
 from time import sleep
 
 import pygame
@@ -12,8 +13,11 @@ from Alien import Alien
 from scoreboard import Scoreboard
 
 
+ignored_key=["left","right","space"]
+def handle_key(event):
+    if event.name not in ignored_key:
+        print(f"Клавиша {event.name} не обработана, используйте только <-,->, space ")
 class AlienInvasion():
-    """Класс для управления ресурсами и поведением игры."""
 
     def __init__(self):
         pygame.init()
@@ -40,6 +44,7 @@ class AlienInvasion():
                 self._update_bullets()
                 self._update_aliens()
             self._update_screen()
+
 
     def _create_fleet(self):
         alien=Alien(self)
@@ -86,6 +91,7 @@ class AlienInvasion():
     def _ship_hit(self):
         if self.stats.ships_left>0:
             self.stats.ships_left-=1
+            self.sb.prep_ship()
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
@@ -124,9 +130,13 @@ class AlienInvasion():
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            print("Нажата кнопка игра")
 
             self.stats.reset_stats()
             self.stats.game_active = True
+            if self.stats.game_active == True:
+                keyboard.on_press(handle_key)
+            self.sb.prep_ship()
 
             self.aliens.empty()
             self.bullets.empty()
@@ -141,6 +151,7 @@ class AlienInvasion():
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
 
+
     def _check_keyup_events(self,event):
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
@@ -148,6 +159,7 @@ class AlienInvasion():
             self.ship.moving_left = False
         elif event.key ==pygame.K_SPACE:
             self._fire_bullet()
+            print("Нажата кнопка SPACE")
 
     def _fire_bullet(self):
         if len(self.bullets) <self.settings.bullets_allowed:
